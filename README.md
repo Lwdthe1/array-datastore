@@ -6,6 +6,7 @@ You can also specify placeholders for displaying shimmers while awaiting data fr
 
 - [Install](#install)
 - [Usage](#usage)
+- [Example](#example)
 - [Tests](#tests)
 - [Contributing](#contributing)
 
@@ -14,8 +15,6 @@ You can also specify placeholders for displaying shimmers while awaiting data fr
 `npm install --save array-datastore`
 
 ## Usage
-
-![carbon (2)](https://user-images.githubusercontent.com/5778798/68903664-ab0e9a00-06f0-11ea-8532-57b2ef4ff414.png)
 
 1. `constructor.instance(configObject)` Create a new instance of the store with an optional configuration object.
 2. `addUniqueObject()` Add an unique object to the store.
@@ -29,6 +28,8 @@ You can also specify placeholders for displaying shimmers while awaiting data fr
 10. `hasPlaceholders()` Checks if the store has placeholder objects.
 11. `clearPlaceholders()` Remove the placeholder objects from the store.
 
+See the tests (`tests/dataStore_test.js`) to see how these methods are used.
+
 ### config object
 
 When creating the store, you can specify an optional configuration object.
@@ -37,7 +38,9 @@ When creating the store, you can specify an optional configuration object.
 
 You can specify a number of placeholders or an array of placeholder objects that will populate the store until you add your first actual object or you call the #clearPlaceholders() method.
 
-See the tests (`tests/dataStore_test.js`) to see how these methods are used.
+# Example
+
+![carbon (3)](https://user-images.githubusercontent.com/5778798/68904035-b3b3a000-06f1-11ea-82b3-80aa55194570.png)
 
 ## Tests
 
