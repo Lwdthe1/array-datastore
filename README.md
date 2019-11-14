@@ -38,7 +38,7 @@ When creating the store, you can specify an optional configuration object.
 
 You can specify a number of placeholders or an array of placeholder objects that will populate the store until you add your first actual object or you call the #clearPlaceholders() method.
 
-# Example
+### Example
 
 ![carbon (4)](https://user-images.githubusercontent.com/5778798/68904124-fd9c8600-06f1-11ea-9d33-33a9f8613121.png)
 
