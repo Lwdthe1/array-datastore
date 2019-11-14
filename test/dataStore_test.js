@@ -5,6 +5,42 @@ const { assert } = require("chai");
 const ArrayDataStore = require("../index");
 const testHelper = require("./TestHelper").instance();
 
+describe("#instance()", () => {
+  it("Should succeed to create new instance of the store without placeholders", () => {
+    const store = ArrayDataStore.instance();
+    assert.deepEqual(store.getObjects(), []);
+    assert.isFalse(store.hasPlaceholders());
+  });
+
+  it("Should succeed to create new instance of the store with placeholder objects", () => {
+    const store = ArrayDataStore.instance({ placeholders: 5 });
+    assert.deepEqual(store.getObjects(), [
+      {
+        $isPlaceholder: true,
+        $index: 0
+      },
+      {
+        $isPlaceholder: true,
+        $index: 1
+      },
+      {
+        $isPlaceholder: true,
+        $index: 2
+      },
+      {
+        $isPlaceholder: true,
+        $index: 3
+      },
+      {
+        $isPlaceholder: true,
+        $index: 4
+      }
+    ]);
+
+    assert.isTrue(store.hasPlaceholders());
+  });
+});
+
 describe("#addUniqueObject()", function() {
   it("Should succeed to add new object to the store", () => {
     const store = ArrayDataStore.instance();
@@ -212,4 +248,37 @@ describe("#replaceObject()", function() {
       assert.deepEqual(addUniqueObjectSpy.lastCall.args, [newObj, false]);
     })
   );
+});
+
+describe("#clearPlaceholders()", () => {
+  it.only("Should succeed to clear the placeholder objects from the store", () => {
+    const store = ArrayDataStore.instance({ placeholders: 5 });
+    assert.deepEqual(store.getObjects(), [
+      {
+        $isPlaceholder: true,
+        $index: 0
+      },
+      {
+        $isPlaceholder: true,
+        $index: 1
+      },
+      {
+        $isPlaceholder: true,
+        $index: 2
+      },
+      {
+        $isPlaceholder: true,
+        $index: 3
+      },
+      {
+        $isPlaceholder: true,
+        $index: 4
+      }
+    ]);
+
+    assert.isTrue(store.hasPlaceholders());
+
+    store.clearPlaceholders();
+    assert.isFalse(store.hasPlaceholders());
+  });
 });
