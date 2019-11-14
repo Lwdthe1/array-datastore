@@ -43,4 +43,4 @@ We use mocha and chai. Run `npm test` to test the generators.
 
 ## Contributing
 
-Feel free to open a pull request.
+Feel free to open a pull request!
