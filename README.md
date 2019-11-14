@@ -40,7 +40,7 @@ You can specify a number of placeholders or an array of placeholder objects that
 
 # Example
 
-![carbon (3)](https://user-images.githubusercontent.com/5778798/68904035-b3b3a000-06f1-11ea-82b3-80aa55194570.png)
+![carbon (4)](https://user-images.githubusercontent.com/5778798/68904124-fd9c8600-06f1-11ea-9d33-33a9f8613121.png)
 
 ## Tests
 
