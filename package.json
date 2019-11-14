@@ -1,6 +1,6 @@
 {
   "name": "array-datastore",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A datastore to store unique objects in an array.",
   "main": "index.js",
   "repository": {
