@@ -15,6 +15,8 @@ You can also specify placeholders for displaying shimmers while awaiting data fr
 
 ## Usage
 
+![carbon (2)](https://user-images.githubusercontent.com/5778798/68903664-ab0e9a00-06f0-11ea-8532-57b2ef4ff414.png)
+
 1. `constructor.instance(configObject)` Create a new instance of the store with an optional configuration object.
 2. `addUniqueObject()` Add an unique object to the store.
 3. `addUniqueObjects()` Add an array unique objects to the store.
@@ -43,4 +45,4 @@ We use mocha and chai. Run `npm test` to test the generators.
 
 ## Contributing
 
-Feel free to open a pull request.
+Feel free to open a pull request!

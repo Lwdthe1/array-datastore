@@ -251,7 +251,7 @@ describe("#replaceObject()", function() {
 });
 
 describe("#clearPlaceholders()", () => {
-  it.only("Should succeed to clear the placeholder objects from the store", () => {
+  it("Should succeed to clear the placeholder objects from the store", () => {
     const store = ArrayDataStore.instance({ placeholders: 5 });
     assert.deepEqual(store.getObjects(), [
       {
