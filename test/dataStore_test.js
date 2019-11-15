@@ -343,7 +343,7 @@ describe("#hasObjectById()", function() {
   });
 });
 
-describe("#getIndexOfObjectById()", function() {
+describe("#getObjectIndexById()", function() {
   it("Should return the index of the object when it exists in the store by the provided id", () => {
     const store = ArrayDataStore.instance();
     const obj1 = { id: 123, name: "Lincoln" };
@@ -351,14 +351,14 @@ describe("#getIndexOfObjectById()", function() {
 
     store.addUniqueObjects([obj1, obj2]);
 
-    assert.equal(store.getIndexOfObjectById(obj2.id), 1);
+    assert.equal(store.getObjectIndexById(obj2.id), 1);
   });
 
   it("Should return -1 when object does not exist in the store by the provided id", () => {
     const store = ArrayDataStore.instance();
     store.addUniqueObjects([{ id: 123, name: "Lincoln" }]);
 
-    assert.equal(store.getIndexOfObjectById(12), -1);
+    assert.equal(store.getObjectIndexById(12), -1);
   });
 });
 
