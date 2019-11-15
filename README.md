@@ -27,6 +27,7 @@ You can also specify placeholders for displaying shimmers while awaiting data fr
 9. `hasObjectById()` Check if the store has an object by its id.
 10. `hasPlaceholders()` Checks if the store has placeholder objects.
 11. `clearPlaceholders()` Remove the placeholder objects from the store.
+12. `setBeforeAddProcessor(callbackFunction)` Set a function that will be called before any time an object is added to the store.
 
 See the tests (`tests/dataStore_test.js`) to see how these methods are used.
 

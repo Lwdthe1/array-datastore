@@ -81,6 +81,35 @@ describe("#addUniqueObjects()", function() {
       assert.equal(addUniqueObjectSpy.callCount, 3);
     })
   );
+
+  it(
+    "Should call the setBeforeAddProcessor when set",
+    testHelper.testWithStubs(() => {
+      const store = ArrayDataStore.instance();
+      store.setBeforeAddProcessor((object, opts) => {
+        if (opts.isPrepend) {
+          console.log("Prepending object:", object.id);
+        } else {
+          console.log("Adding object:", object.id);
+        }
+      });
+
+      const beforeAddObjectProcessorSpy = testHelper.spy(
+        store,
+        "_beforeAddObjectProcessor"
+      );
+
+      const obj1 = { id: 123, name: "Lincoln" };
+      const obj2 = { id: 234, name: "Daniel" };
+
+      store.addUniqueObjects([obj1, obj2]);
+
+      assert.equal(beforeAddObjectProcessorSpy.callCount, 2);
+      const calls = beforeAddObjectProcessorSpy.getCalls();
+      assert.deepEqual(calls[0].args, [obj1, { isPrepend: false }]);
+      assert.deepEqual(calls[1].args, [obj2, { isPrepend: false }]);
+    })
+  );
 });
 
 describe("#prependUniqueObject()", function() {
@@ -134,6 +163,91 @@ describe("#prependUniqueObjects()", function() {
       );
     })
   );
+
+  it(
+    "Should call the setBeforeAddProcessor when set",
+    testHelper.testWithStubs(() => {
+      const store = ArrayDataStore.instance();
+      store.setBeforeAddProcessor((object, opts) => {
+        if (opts.isPrepend) {
+          console.log("Prepending object:", object.id);
+        } else {
+          console.log("Adding object:", object.id);
+        }
+      });
+
+      const beforeAddObjectProcessorSpy = testHelper.spy(
+        store,
+        "_beforeAddObjectProcessor"
+      );
+
+      const obj1 = { id: 123, name: "Lincoln" };
+      const obj2 = { id: 234, name: "Daniel" };
+
+      store.prependUniqueObjects([obj1, obj2]);
+
+      assert.equal(beforeAddObjectProcessorSpy.callCount, 2);
+      const calls = beforeAddObjectProcessorSpy.getCalls();
+      assert.deepEqual(calls[0].args, [obj1, { isPrepend: true }]);
+      assert.deepEqual(calls[1].args, [obj2, { isPrepend: true }]);
+    })
+  );
+});
+
+describe("#setBeforeAddProcessor()", function() {
+  it("Should set the _beforeAddObjectProcessor field with the provided function", () => {
+    const store = ArrayDataStore.instance();
+
+    assert.isUndefined(store._beforeAddObjectProcessor);
+
+    const processor = (object, _opts) => {
+      object.foo = "bar";
+    };
+
+    // Set the processor
+    store.setBeforeAddProcessor(processor);
+    assert.equal(store._beforeAddObjectProcessor, processor);
+
+    const processor2 = (object, opts) => {
+      if (opts.isPrepend) {
+        console.log("Prepending object:", object.id);
+      } else {
+        console.log("Adding object:", object.id);
+      }
+    };
+
+    // Update the processor
+    store.setBeforeAddProcessor(processor2);
+    assert.equal(store._beforeAddObjectProcessor, processor2);
+  });
+});
+
+describe("#getObjects()", function() {
+  it("Should return all the objects in the store.", () => {
+    const store = ArrayDataStore.instance();
+    const obj1 = { id: 123, name: "Lincoln" };
+    const obj2 = { id: 234, name: "Daniel" };
+    const obj3 = { id: 345 };
+
+    store.addUniqueObjects([obj1, obj2, obj3, obj1]);
+    assert.deepEqual(store.getObjects(), [obj1, obj2, obj3]);
+  });
+});
+
+describe("#getObjectIds()", function() {
+  it("Should return all the object ids in the store.", () => {
+    const store = ArrayDataStore.instance();
+    const obj1 = { id: 123, name: "Lincoln" };
+    const obj2 = { id: 234, name: "Daniel" };
+    const obj3 = { id: 345 };
+
+    store.addUniqueObjects([obj1, obj2, obj3, obj1]);
+    assert.deepEqual(store.getObjectIds(), [
+      `${obj1.id}`,
+      `${obj2.id}`,
+      `${obj3.id}`
+    ]);
+  });
 });
 
 describe("#getObjectById()", function() {
@@ -155,6 +269,61 @@ describe("#getObjectById()", function() {
   });
 });
 
+describe("#getObjectAtIndex()", function() {
+  it("Should succeed to get an object at the provided index in the store", () => {
+    const store = ArrayDataStore.instance();
+    const obj1 = { id: 123, name: "Lincoln" };
+    const obj2 = { id: 234, name: "Daniel" };
+
+    store.addUniqueObjects([obj1, obj2]);
+
+    assert.deepEqual(store.getObjectAtIndex(1), obj2);
+    assert.deepEqual(store.getObjectAtIndex(1), obj2);
+  });
+
+  it("Should return undefined for invalid index ", () => {
+    const store = ArrayDataStore.instance();
+    store.addUniqueObjects([{ id: 123, name: "Lincoln" }]);
+
+    assert.isUndefined(store.getObjectAtIndex(6));
+  });
+
+  it("Should return undefined when store is empty ", () => {
+    const store = ArrayDataStore.instance();
+
+    assert.isUndefined(store.getObjectAtIndex(0));
+  });
+});
+
+describe("#getObjectByPredicate()", function() {
+  it("Should succeed to get the first object matching the provided filter when exists in the store", () => {
+    const store = ArrayDataStore.instance();
+    const obj1 = { id: 123, name: "Lincoln" };
+    const obj2 = { id: 234, name: "Daniel" };
+    const obj3 = { id: 345, name: "Daniel" };
+
+    store.addUniqueObjects([obj1, obj2, obj3]);
+
+    assert.deepEqual(
+      store.getObjectByPredicate(object => {
+        return object.name == "Daniel";
+      }),
+      obj2
+    );
+  });
+
+  it("Should fail to get an object by the provided predicate when does not exist in the store.", () => {
+    const store = ArrayDataStore.instance();
+    store.addUniqueObjects([{ id: 123, name: "Lincoln" }]);
+
+    assert.isUndefined(
+      store.getObjectByPredicate(object => {
+        return object.name == "Daniel";
+      })
+    );
+  });
+});
+
 describe("#hasObjectById()", function() {
   it("Should return true for when object exists in the store by the provided id", () => {
     const store = ArrayDataStore.instance();
@@ -171,6 +340,25 @@ describe("#hasObjectById()", function() {
     store.addUniqueObjects([{ id: 123, name: "Lincoln" }]);
 
     assert.isFalse(store.hasObjectById(12));
+  });
+});
+
+describe("#getIndexOfObjectById()", function() {
+  it("Should return the index of the object when it exists in the store by the provided id", () => {
+    const store = ArrayDataStore.instance();
+    const obj1 = { id: 123, name: "Lincoln" };
+    const obj2 = { id: 234, name: "Daniel" };
+
+    store.addUniqueObjects([obj1, obj2]);
+
+    assert.equal(store.getIndexOfObjectById(obj2.id), 1);
+  });
+
+  it("Should return -1 when object does not exist in the store by the provided id", () => {
+    const store = ArrayDataStore.instance();
+    store.addUniqueObjects([{ id: 123, name: "Lincoln" }]);
+
+    assert.equal(store.getIndexOfObjectById(12), -1);
   });
 });
 
@@ -280,5 +468,26 @@ describe("#clearPlaceholders()", () => {
 
     store.clearPlaceholders();
     assert.isFalse(store.hasPlaceholders());
+  });
+});
+
+describe("#reset()", function() {
+  it("Should succeed to delete the object by its id and return the object and its index when exists in the store.", () => {
+    const store = ArrayDataStore.instance();
+    const obj1 = { id: 123, name: "Lincoln" };
+    const obj2 = { id: 234, name: "Daniel" };
+    const obj3 = { id: 345 };
+
+    store.addUniqueObjects([obj1, obj2, obj3]);
+    assert.deepEqual(store.getObjects(), [obj1, obj2, obj3]);
+    assert.deepEqual(store.getObjectIds(), [
+      `${obj1.id}`,
+      `${obj2.id}`,
+      `${obj3.id}`
+    ]);
+
+    store.reset();
+    assert.deepEqual(store.getObjects(), []);
+    assert.deepEqual(store.getObjectIds(), []);
   });
 });
