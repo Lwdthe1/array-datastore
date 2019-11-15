@@ -54,7 +54,7 @@ You can specify a number of placeholders or an array of placeholder objects that
 
 ## Tests
 
-We use mocha and chai. Run `npm test` to test the generators.
+We use mocha and chai. Run `npm test`
 
 ## Contributing
 
