@@ -12,6 +12,8 @@ You can also specify placeholders for displaying shimmers while awaiting data fr
 
 `npm install --save array-datastore`
 
+![Array-DataStore](https://user-images.githubusercontent.com/5778798/69487585-79dd4a80-0e11-11ea-820d-6f8aff89e0e9.png)
+
 # Usage
 
 - `constructor.instance(configObject)` Create a new instance of the store with an optional configuration object.
