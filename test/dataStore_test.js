@@ -250,6 +250,77 @@ describe("#getObjectIds()", function() {
   });
 });
 
+describe("#sections()", function() {
+  it("Should return all sections in the store when custom section sizes not provided.", () => {
+    const store = ArrayDataStore.instance({});
+    const obj1 = { id: 123, name: "Lincoln" };
+    const obj2 = { id: 234, name: "Daniel" };
+    const obj3 = { id: 345 };
+    const obj4 = { id: 456 };
+    const obj5 = { id: 567 };
+    const obj6 = { id: 678 };
+    const obj7 = { id: 789 };
+    const obj8 = { id: 891 };
+    const obj9 = { id: 911 };
+    const obj10 = { id: 1011 };
+    const obj11 = { id: 1112 };
+    const obj12 = { id: 1213 };
+
+    store.addUniqueObjects([
+      obj1,
+      obj2,
+      obj3,
+      obj1,
+      obj4,
+      obj5,
+      obj6,
+      obj7,
+      obj8,
+      obj9,
+      obj10,
+      obj11,
+      obj12
+    ]);
+
+    assert.deepEqual(
+      store.sections.map(({ items }) => items),
+      [
+        [obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8, obj9, obj10],
+        [obj11, obj12]
+      ]
+    );
+  });
+
+  it("Should return all sections in the store when custom section sizes provided.", () => {
+    const store = ArrayDataStore.instance({ sectionSizes: [1, 2, 0, 3] });
+    const obj1 = { id: 123, name: "Lincoln" };
+    const obj2 = { id: 234, name: "Daniel" };
+    const obj3 = { id: 345 };
+    const obj4 = { id: 456 };
+    const obj5 = { id: 567 };
+    const obj6 = { id: 678 };
+    const obj7 = { id: 789 };
+    const obj8 = { id: 891 };
+
+    store.addUniqueObjects([
+      obj1,
+      obj2,
+      obj3,
+      obj1,
+      obj4,
+      obj5,
+      obj6,
+      obj7,
+      obj8
+    ]);
+
+    assert.deepEqual(
+      store.sections.map(({ items }) => items),
+      [[obj1], [obj2, obj3], [], [obj4, obj5, obj6], [obj7, obj8]]
+    );
+  });
+});
+
 describe("#getObjectById()", function() {
   it("Should succeed to get an object by its id when exists in the store", () => {
     const store = ArrayDataStore.instance();
