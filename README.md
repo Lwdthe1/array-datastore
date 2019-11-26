@@ -37,6 +37,7 @@ You can also specify placeholders for displaying shimmers while awaiting data fr
 
 - `hasPlaceholders()` Checks if the store has placeholder objects.
 - `clearPlaceholders()` Remove the placeholder objects from the store.
+- `sections` Get the sections of the datastore. As you add values to the datastore, they are also added to a `sectionedList`. Note that this sectionedList can only be added to and no items will ever be removed from it; this may change in the future. See [sectioned-list](https://github.com/Lwdthe1/sectioned-list) library for details.
 
 See the tests (`tests/dataStore_test.js`) to see how these methods are used.
 
@@ -47,6 +48,10 @@ When creating the store, you can specify an optional configuration object.
 ### placeholders: `number|Array<Object>`
 
 You can specify a number of placeholders or an array of placeholder objects that will populate the store until you add your first actual object or you call the #clearPlaceholders() method.
+
+### sectionSizes: Array<Number>
+
+See [sectioned-list](https://github.com/Lwdthe1/sectioned-list) library.
 
 ## Example
 
